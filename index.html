@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Practice</title>
+    <!-- React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <!-- ReactDOM -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <!-- Babel para procesar JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        //Gomponente Greeting
+        function Greeting() {
+            return <h1>¡Hola, bienvenido a React!</h1>;
+        }
+
+        // Componente CommentForm
+        function CommentForm({ onAddComment }) {
+            const [comment, setComment] = React.useState("");
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (comment.trim()) {
+                    onAddComment(comment);
+                    setComment("");
+                }
+            };
+
+            return (
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Escribe un comentario"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
+                    <button type="submit">Enviar comentario</button>
+                </form>
+            );
+        }
+
+        // Componente App
+        function App() {
+            const [comments, setComments] = React.useState([]);
+
+            const addComment = (newComment) => {
+                setComments([...comments, newComment]);
+            };
+
+            return (
+                <div>
+                    <Greeting />
+                    <CommentForm onAddComment={addComment} />
+                    <ul>
+                        {comments.map((comment, index) => (
+                            <li key={index}>{comment}</li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        // Render App component
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
